@@ -1,12 +1,6 @@
 file = open("src/three/input.txt").readlines()
 
 
-final_gamma = ''
-final_epsilon = ''
-
-oxy = ''
-co = ''
-
 bits = len(file[0]) - 1
 
 def most_least_common_bit(lines, double):
