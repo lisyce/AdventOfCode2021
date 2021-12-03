@@ -12,8 +12,8 @@ bits = len(file[0]) - 1
 def most_least_common_bit(lines, double):
     most_least = ['', '']
     for i in range(bits):
-        zero = 0;
-        one = 0;
+        zero = 0
+        one = 0
         for line in lines:
             line = line.strip()
             bit = line[i]
