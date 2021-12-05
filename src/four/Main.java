@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.*;
 
 
-public class PartOne {
+public class Main {
 
     static int[] drawnNumbers;
-    static ArrayList<BingoBoard> allBoards;
+    static final ArrayList<BingoBoard> allBoards = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         //parse the drawing numbers
@@ -16,7 +16,6 @@ public class PartOne {
         drawnNumbers = Arrays.stream(s.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
 
         //parse data into BingoBoards
-        allBoards = new ArrayList<>();
 
         while(s.hasNextLine()){
             s.nextLine();
