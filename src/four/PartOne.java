@@ -1,8 +1,8 @@
 package four;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
+
 
 public class PartOne {
 
@@ -28,18 +28,48 @@ public class PartOne {
             allBoards.add(new BingoBoard(tempData));
         }
 
-        //draw all numbers, breaking out of loop if a board wins
-        int winningNum = markBoards();
-
-        //find winning board and calculate its score
-        System.out.println(findWinningBoard().calcScore() * winningNum);
+        partOne();
+        partTwo();
 
     }
 
-    public static int markBoards() {
+    public static void partOne() throws Exception {
+        //draw all numbers, breaking out of loop if a board wins
+        int winningNum = markBoards(true);
+
+        //find winning board and calculate its score
+        System.out.println(findWinningBoard().calcScore() * winningNum);
+    }
+
+    public static void partTwo() {
+
+        int endNum = markBoards(false);
+        //find last winning board
+        BingoBoard winningBoard = (BingoBoard) allBoards.stream().filter(BingoBoard::isLastToWin).toArray()[0];
+        System.out.println(endNum * winningBoard.calcScore());
+
+    }
+
+
+    public static int markBoards(boolean stopAtFirstWin) {
         for(int drawnNumber : drawnNumbers) {
             for(BingoBoard board : allBoards) {
-                if(board.markNumber(drawnNumber)) return drawnNumber;
+                if(board.markNumber(drawnNumber) && stopAtFirstWin) return drawnNumber;
+            }
+            //see if one board is still a loser
+            if(!stopAtFirstWin) {
+                int loserCount = (int) allBoards.stream().filter(x -> !x.checkWinner()).count();
+
+                //if we've got one board remaining, set it as the lsat to win
+                if(loserCount == 1) {
+                    for(BingoBoard board : allBoards) {
+                        if(!board.checkWinner()) board.setLastToWin(true);
+                    }
+                }
+
+                if(loserCount == 0) {
+                    return drawnNumber;
+                }
             }
         }
 

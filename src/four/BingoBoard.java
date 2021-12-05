@@ -6,6 +6,7 @@ public class BingoBoard {
     //set value to -1 if it gets marked
     private final int[][] dataSet = new int[5][5];
     private boolean isWinner = false;
+    private boolean lastToWin = false;
 
     public BingoBoard(int[][] dataSet) {
         for(int i=0; i<dataSet.length; i++){
@@ -55,5 +56,11 @@ public class BingoBoard {
         return score;
     }
 
+    public void setLastToWin(boolean lastToWin) {
+        this.lastToWin = lastToWin;
+    }
 
+    public boolean isLastToWin() {
+        return this.lastToWin;
+    }
 }
