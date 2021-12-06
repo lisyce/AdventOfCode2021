@@ -1,4 +1,4 @@
-file = open("src/one/input.txt")
+file = open("src/day1/input.txt")
 
 total_increases = 0
 last_total = 0

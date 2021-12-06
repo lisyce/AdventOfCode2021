@@ -1,7 +1,7 @@
-file = open("src/two/input.txt").readlines()
+file = open("src/day2/input.txt").readlines()
 
-horizontal = 0;
-vertical = 0;
+horizontal = 0
+vertical = 0
 
 for line in file:
     line = line.strip()

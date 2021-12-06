@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner s = new Scanner(new File("src/one/input.txt"));
+        Scanner s = new Scanner(new File("src/day1/input.txt"));
 
         //part one
 //        int total = 0;

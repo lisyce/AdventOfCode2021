@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         //parse the drawing numbers
-        Scanner s  = new Scanner(new File("src/four/input.txt"));
+        Scanner s  = new Scanner(new File("src/day4/input.txt"));
 
         drawnNumbers = Arrays.stream(s.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
 

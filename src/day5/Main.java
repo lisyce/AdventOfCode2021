@@ -14,7 +14,7 @@ public class Main {
     }
 
     public static void partOne() throws IOException {
-        File f = new File("src/five/input.txt");
+        File f = new File("src/day5/input.txt");
 
         List<String> lines = Files.readAllLines(f.toPath());
         for(String line : lines) {
@@ -31,7 +31,7 @@ public class Main {
     }
 
     public static void partTwo() throws IOException {
-        File f = new File("src/five/input.txt");
+        File f = new File("src/day5/input.txt");
 
         List<String> lines = Files.readAllLines(f.toPath());
         for(String line : lines) {
