@@ -68,16 +68,16 @@ public class Main {
             decoder.put("g", "");
 
             //1. figure out which segments correspond to c and f (number 1)
-            List<String> cf = findSegmentByLength(key, 2);
+            List<String> cf = findSegmentsByLength(key, 2);
             //2. figure out which segments correspond to c, f, and a (number 7)
-            List<String> cfa = findSegmentByLength(key, 3);
+            List<String> cfa = findSegmentsByLength(key, 3);
             //which is the unique char? that corresponds to "a"
             for(String str : cfa) {
                 if(!cf.contains(str)) decoder.replace("a", str);
             }
 
             //3. which chunk corresponds to 4? (4 segments). the 2 new characters correspond to b and d but idk which
-            List<String> increasingChecker = findSegmentByLength(key, 4);
+            List<String> increasingChecker = findSegmentsByLength(key, 4);
             List<String> bd = new LinkedList<>();
             for(String str : increasingChecker) {
                 if(!cf.contains(str)) bd.add(str);
@@ -88,7 +88,7 @@ public class Main {
                 if (str.length() == 6 && str.contains(decoder.get("a")) && strContainsAllLetters(increasingChecker, str)) {
                     //string has all the right characters, find the new one (g)
                     increasingChecker.add(decoder.get("a"));
-                    decoder.replace("g", findUniqueLetter(increasingChecker, str));
+                    decoder.replace("g", findUnknownSegment(increasingChecker, str));
                     increasingChecker.add(decoder.get("g"));
                     break;
                 }
@@ -97,7 +97,7 @@ public class Main {
             //5. find a 7 segment one (#8) take out the c/f chunk and the b/d chunk and the a and g and e is for sure
             for(String str : key) {
                 if(str.length() == 7 && strContainsAllLetters(increasingChecker, str)) {
-                    decoder.replace("e", findUniqueLetter(increasingChecker, str));
+                    decoder.replace("e", findUnknownSegment(increasingChecker, str));
                     increasingChecker.add(decoder.get("e"));
                     break;
                 }
@@ -113,7 +113,7 @@ public class Main {
 
             for(String str : key) {
                 if(str.length() == 5 && strContainsAllLetters(acdfg, str)) {
-                    decoder.replace("d", findUniqueLetter(acdfg, str));
+                    decoder.replace("d", findUnknownSegment(acdfg, str));
                     decoder.replace("b", bd.get(0).equals(decoder.get("d")) ? bd.get(1) : bd.get(0));
                     break;
                 }
@@ -132,7 +132,7 @@ public class Main {
             //find one that only has one remaining unknown and uses 6 segments (num 6)
             for(String str : key) {
                 if(calculateNumUnknowns(decoder, str) == 1 && str.length() == 6) {
-                    decoder.replace("f", findUniqueLetter(increasingChecker, str));
+                    decoder.replace("f", findUnknownSegment(increasingChecker, str));
                     increasingChecker.add(decoder.get("f"));
                     break;
                 }
@@ -141,7 +141,7 @@ public class Main {
             //find a number 8 and use it to fill in c
             for(String str : key) {
                 if(str.length() == 7) {
-                    decoder.replace("c", findUniqueLetter(increasingChecker, str));
+                    decoder.replace("c", findUnknownSegment(increasingChecker, str));
                     break;
                 }
             }
@@ -154,6 +154,12 @@ public class Main {
 
     }
 
+    /**
+     * Decodes the 4 output values (Or technically any number of them) but it never gets passed more than 4
+     * @param decoder Decoding key for the jumbled input
+     * @param outputs The four outputs on each line
+     * @return Four-digit number representing the output of the line
+     */
     public static int decodeOutput(Map<String, String> decoder, List<String> outputs) {
         StringBuilder finalString = new StringBuilder();
         for(String str : outputs) {
@@ -162,8 +168,14 @@ public class Main {
         return Integer.parseInt(finalString.toString());
     }
 
-    public static String decodeNumber(Map<String, String> decoder, String decodeNumber) {
-        switch(decodeNumber.length()) {
+    /**
+     * Converts a jumbled String into a String representation of a digit to be used in decodeOutput's concatenation
+     * @param decoder Decoding key for the jumbled input
+     * @param jumbledInput The jumbled input (idk what else to say about it)
+     * @return One digit that the jumbled input represents in String form
+     */
+    public static String decodeNumber(Map<String, String> decoder, String jumbledInput) {
+        switch(jumbledInput.length()) {
             case 2:
                 return "1";
             case 3:
@@ -171,12 +183,12 @@ public class Main {
             case 4:
                 return "4";
             case 5:
-                if(decodeNumber.contains(decoder.get("b"))) return "5";
-                else if(decodeNumber.contains(decoder.get("e"))) return "2";
+                if(jumbledInput.contains(decoder.get("b"))) return "5";
+                else if(jumbledInput.contains(decoder.get("e"))) return "2";
                 return "3";
             case 6:
-                if(!decodeNumber.contains(decoder.get("d"))) return "0";
-                else if(!decodeNumber.contains(decoder.get("c"))) return "6";
+                if(!jumbledInput.contains(decoder.get("d"))) return "0";
+                else if(!jumbledInput.contains(decoder.get("c"))) return "6";
                 return "9";
             case 7:
                 return "8";
@@ -185,27 +197,57 @@ public class Main {
         return "-1";
     }
 
-    public static int calculateNumUnknowns(Map<String, String> decoder, String searchString) {
-        int unknowns = searchString.length();
+    /**
+     * Based on the decoder passed in (which may have unknown values), calculates how many unknown segments are in the
+     * jumbledInput
+     * @param decoder Decoding key for the jumbled input
+     * @param jumbledInput Selection of segments that may have unknowns in them (in jumbled form)
+     * @return The number of segments that were unable to be decoded in the jumbled input
+     */
+    public static int calculateNumUnknowns(Map<String, String> decoder, String jumbledInput) {
+        int unknowns = jumbledInput.length();
         for(String key : decoder.keySet()) {
-            if(searchString.contains(decoder.get(key)) && !decoder.get(key).isEmpty()) unknowns--;
+            if(jumbledInput.contains(decoder.get(key)) && !decoder.get(key).isEmpty()) unknowns--;
         }
         return unknowns;
     }
 
-    public static String findUniqueLetter(List<String> nonUniques, String searchString) {
-        for(String nonUnique : nonUniques) {
-            if(searchString.contains(nonUnique)) searchString = searchString.replace(nonUnique, "");
+    /**
+     * Determines which segment in the jumbled input does not have a value in the decoder
+     * @param knownSegments List of segments we do not want to have returned to us (cannot just use the decoder
+     *                      because of instances such as c/f where we know the two corresponding values, but not
+     *                      which they correspond to)
+     * @param jumbledInput Selection of segments that may have a non-decodable value in them presently
+     * @return The letter of the segment that does not have a decoding key (or multiple letters if multiple are unknown)
+     * I am aware that it should handle having multiple unknowns in its own self, but I handle it elsewhere and
+     * do not want to change it
+     */
+    public static String findUnknownSegment(List<String> knownSegments, String jumbledInput) {
+        for(String knownSegment : knownSegments) {
+            if(jumbledInput.contains(knownSegment)) jumbledInput = jumbledInput.replace(knownSegment, "");
         }
-        return searchString;
+        return jumbledInput;
     }
 
+    /**
+     * Determines whether a combination of segments contains all the letters specified
+     * @param containedLetters The letters that we want to be contained in the searchString
+     * @param searchString The String that may contain all the segments
+     * @return Whether the searchString contains all the containedLetters
+     */
     public static boolean strContainsAllLetters(List<String> containedLetters, String searchString) {
         for(String str : containedLetters) if(!searchString.contains(str)) return false;
         return true;
     }
 
-    public static List<String> findSegmentByLength(List<String> searchList, int len) {
+    /**
+     * Returns the first data point (e.g. jumbled input) of the specified length in the searchList split into
+     * a List of its respective segments
+     * @param searchList The list that may contain the segment of the specified length
+     * @param len The length of the data point being searched for
+     * @return A List of all the letters of the segments in the data point
+     */
+    public static List<String> findSegmentsByLength(List<String> searchList, int len) {
         for(String str : searchList) if(str.length() == len) return Arrays.stream(str.split("")).collect(Collectors.toList());
         return new LinkedList<>();
     }
