@@ -1,0 +1,5 @@
+start at upper left and traverse that way
+
+go until we find a low point. every basin has a low point.
+
+map the whole board to whether or not the area has been counted
