@@ -26,21 +26,24 @@ public class Main {
     public static void main(String[] args) throws IOException {
         File f = new File("src/day8/main_input.txt");
         List<String> lines = Files.readAllLines(f.toPath());
-        Map<List<String>, List<String>> myNotes = new LinkedHashMap<>();
 
-        //TODO make parsing way cleaner
-        Scanner s = new Scanner(f);
-        while(s.hasNextLine()) {
-            String[] twoHalves = s.nextLine().split("\\|");
-            List<String> inputs = Arrays.stream(twoHalves[0].split(" ")).collect(Collectors.toList());
-            List<String> outputs = Arrays.stream(twoHalves[1].split(" ")).collect(Collectors.toList());
-            myNotes.put(inputs, outputs);
-        }
-        s.close();
+        //cleaner parsing with more streams (same thing as below but nicer looking)
+        Map<List<String>, List<String>> myNotes = lines.stream().map(x -> x.split("\\|")).collect(Collectors.toMap(
+                x -> Arrays.stream(x[0].split(" ")).collect(Collectors.toList()),
+                x -> Arrays.stream(x[1].split(" ")).collect(Collectors.toList())));
+
+// OLD PARSING BELOW
+//        Scanner s = new Scanner(f);
+//        while(s.hasNextLine()) {
+//            String[] twoHalves = s.nextLine().split("\\|");
+//            List<String> inputs = Arrays.stream(twoHalves[0].split(" ")).collect(Collectors.toList());
+//            List<String> outputs = Arrays.stream(twoHalves[1].split(" ")).collect(Collectors.toList());
+//            myNotes.put(inputs, outputs);
+//        }
+//        s.close();
 
         for(List<String> key : myNotes.keySet()) {
             myNotes.replace(key ,myNotes.get(key).stream().filter(x -> !x.isEmpty()).collect(Collectors.toList()));
-
         }
 
 //        //count 1, 4, 7, and 8 (part 1)
