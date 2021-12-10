@@ -74,6 +74,7 @@ public class Main {
             //it's an opening bracket
             if(matchingBrackets.containsKey(c)) traversingChars.add(c);
             else { //it's a closing char
+                //get the key in matchingBrackets from the value (coulda been done with a switch tho lol)
                 Character matchingOpeningChar = matchingBrackets.entrySet().stream().filter(x -> x.getValue().equals(c)).map(Map.Entry::getKey).findFirst().get();
                 if(traversingChars.get(traversingChars.size() - 1)  != matchingOpeningChar && !autocompleteLine) return new LinkedList<>(List.of(c));
                 traversingChars.remove(traversingChars.size()-1);
