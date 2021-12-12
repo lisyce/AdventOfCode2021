@@ -33,7 +33,7 @@ public class PathFinder {
 
     /*
     issue: we can visit cave b on one path, but a different path thinks it's been there
-    solution: when a path terminates, remove all the extra small caves visited
+    solution: branch off with a new Map of small caves visited
      */
 
     public void navigateCavePartOne() {
@@ -44,8 +44,8 @@ public class PathFinder {
         navigateCave(new LinkedHashMap<>(), "start", "", true);
     }
 
-    private void navigateCave(Map<String, Integer> smallCavesVisited, String currentCave, String path, boolean doubleSmallCaves) {
-        Map<String, Integer>copiedSmallCavesVisited = new LinkedHashMap<>(smallCavesVisited);
+    private void navigateCave(Map<String, Integer> previousCaves, String currentCave, String path, boolean doubleSmallCaves) {
+        Map<String, Integer> smallCavesVisited = new LinkedHashMap<>(previousCaves);
 
         //possible next moves
         List<String> connectedCaves = new LinkedList<>();
@@ -58,7 +58,10 @@ public class PathFinder {
         //does this path have a valid next cave to explore?
         boolean canExploreFurther = false;
         for(String connectedCave : connectedCaves) {
-            if(!copiedSmallCavesVisited.containsKey(connectedCave)) {
+            if(!smallCavesVisited.containsKey(connectedCave)) {
+                canExploreFurther = true;
+                break;
+            } else if(smallCavesVisited.get(connectedCave) == 1 && doubleSmallCaves) {
                 canExploreFurther = true;
                 break;
             }
@@ -69,14 +72,30 @@ public class PathFinder {
             path += "end";
             this.pathNum++;
             validPaths.add(path);
-        }
-        else if (canExploreFurther) { //recursive case: we have more of the path to explore
+        } else if (canExploreFurther) { //recursive case: we have more of the path to explore
+
             if(currentCave.equals(currentCave.toLowerCase())) { //we are currently in a small cave
-                if(!copiedSmallCavesVisited.containsKey(currentCave)) copiedSmallCavesVisited.put(currentCave, 1);
+                if(!smallCavesVisited.containsKey(currentCave)) smallCavesVisited.put(currentCave, 1);
+                else if(smallCavesVisited.get(currentCave) == 1 && doubleSmallCaves) smallCavesVisited.replace(currentCave, 2);
             }
             path += currentCave + ",";
+
+            //we can only visit one small cave twice!!!!
+            boolean visitedSmallCaveTwice = false;
+            for(String key : smallCavesVisited.keySet()) {
+                if(smallCavesVisited.get(key) == 2) {
+                    visitedSmallCaveTwice = true;
+                    break;
+                }
+            }
+
+            //explore valid, connected caves
             for(String s : connectedCaves) {
-                if(!copiedSmallCavesVisited.containsKey(s)) navigateCave(copiedSmallCavesVisited, s, path, doubleSmallCaves);
+                if(!smallCavesVisited.containsKey(s)) {
+                    navigateCave(smallCavesVisited, s, path, doubleSmallCaves);
+                } else if(smallCavesVisited.get(s) == 1 && doubleSmallCaves && !s.equals("start")) {
+                    if(!visitedSmallCaveTwice) navigateCave(smallCavesVisited, s, path, true);
+                }
             }
         }
     }

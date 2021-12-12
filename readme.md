@@ -4,4 +4,5 @@
     <li><b>Day 8:</b> Seven Segment Search (I really like my parsing of the file)</li>
     <li><b>Day 10:</b> Syntax Scoring (Concise algorithm)</li>
     <li><b>Day 11:</b> Dumbo Octopus (My first successful recursive method ever)</li>
+    <li><b>Day 12:</b> Passage Pathing (*EVEN BETTER RECURSION GIRLBOSS*)</li>
 </ul>

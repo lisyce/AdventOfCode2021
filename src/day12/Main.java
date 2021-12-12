@@ -12,7 +12,7 @@ public class Main {
         //oh boy it's recursion time
 
         //parse input
-        File f = new File("src/day12/test_input.txt");
+        File f = new File("src/day12/main_input.txt");
         List<List<String>> allCaves = Files.readAllLines(f.toPath()).stream().map(l -> 
                 Arrays.stream(l.split("-")).collect(Collectors.toList())).collect(Collectors.toList());
 
@@ -20,12 +20,12 @@ public class Main {
         pathFinderOne.navigateCavePartOne();
 //        pathFinderOne.printValidPaths();
 //        System.out.println();
-        System.out.println(pathFinderOne.getPathNum() + " total paths found by pathfinder one.");
+        System.out.println(pathFinderOne.getPathNum() + " total paths found by pathfinder one.\n");
 
         PathFinder pathFinderTwo = new PathFinder(allCaves);
         pathFinderTwo.navigateCavePartTwo();
-        pathFinderTwo.printValidPaths();
-        System.out.println();
+//        pathFinderTwo.printValidPaths();
+//        System.out.println();
         System.out.println(pathFinderTwo.getPathNum() + " total paths found by pathfinder two.");
 
     }
