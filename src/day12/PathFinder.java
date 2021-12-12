@@ -58,15 +58,10 @@ public class PathFinder {
         //does this path have a valid next cave to explore?
         boolean canExploreFurther = false;
         for(String connectedCave : connectedCaves) {
-            if(!doubleSmallCaves) {
-                if(!copiedSmallCavesVisited.containsKey(connectedCave)) {
-                    canExploreFurther = true;
-                    break;
-                }
-            } else {
-
+            if(!copiedSmallCavesVisited.containsKey(connectedCave)) {
+                canExploreFurther = true;
+                break;
             }
-
         }
 
         //base case: path is complete
@@ -78,9 +73,6 @@ public class PathFinder {
         else if (canExploreFurther) { //recursive case: we have more of the path to explore
             if(currentCave.equals(currentCave.toLowerCase())) { //we are currently in a small cave
                 if(!copiedSmallCavesVisited.containsKey(currentCave)) copiedSmallCavesVisited.put(currentCave, 1);
-                if(doubleSmallCaves) {
-                    if(copiedSmallCavesVisited.containsKey(currentCave)) copiedSmallCavesVisited.replace(currentCave, 2);
-                }
             }
             path += currentCave + ",";
             for(String s : connectedCaves) {
