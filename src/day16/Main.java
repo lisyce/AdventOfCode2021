@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String input = Files.readAllLines(new File("src/day16/test_input.txt").toPath()).get(0);
+        String input = Files.readAllLines(new File("src/day16/main_input.txt").toPath()).get(0);
         //convert to binary
         Map<String, String> mapHexToBinary = Files.readAllLines(new File("src/day16/hex_to_binary.txt").toPath())
                 .stream().map(l -> l.split(" = ")).collect(Collectors.toMap(
@@ -26,8 +26,9 @@ public class Main {
         //part 1: add up all version numbers of packets
         List<Integer> packetVersions = new LinkedList<>();
         List<Integer> literalValues = new LinkedList<>();
+        List<Integer> operatorPacketsPerLayer = new LinkedList<>();
 
-        parsePacket(binaryInput, packetVersions, literalValues);
+        parsePacket(binaryInput, packetVersions, literalValues, 1);
         int versionSum = packetVersions.stream().mapToInt(x -> x).sum();
         System.out.println(versionSum);
 //        packetVersions.forEach(x -> System.out.print(x + ", "));
@@ -42,7 +43,7 @@ public class Main {
      * @param packetVersions
      * @return length of the packet
      */
-    public static int parsePacket(String packet, List<Integer> packetVersions, List<Integer> literalValues) {
+    public static int parsePacket(String packet, List<Integer> packetVersions, List<Integer> literalValues, int currentLayer) {
         System.out.println("\nbegin new packet");
         System.out.println(packet);
         int packetVersion = Integer.parseInt(packet.substring(0, 3), 2);
@@ -74,7 +75,7 @@ public class Main {
                 System.out.println("there are " + innerPacketLength + " inner packets");
 
                 for(int i = 0; i< innerPacketLength; i++) {
-                    int innerLength = parsePacket(packet.substring(index), packetVersions, literalValues);
+                    int innerLength = parsePacket(packet.substring(index), packetVersions, literalValues, currentLayer+1);
                     index += innerLength;
                 }
                 return packet.length();
@@ -84,11 +85,10 @@ public class Main {
                 String innerBits = packet.substring(index, index+innerPacketLength);
                 int count = 0;
                 while(count < innerPacketLength-1) {
-                    int innerLength = parsePacket(innerBits.substring(count), packetVersions, literalValues);
+                    int innerLength = parsePacket(innerBits.substring(count), packetVersions, literalValues, currentLayer+1);
                     count += innerLength;
                 }
-                //multiply by num of operator packets rather than 2???
-                return innerPacketLength * 2;
+                return innerPacketLength * currentLayer;
             }
 
 

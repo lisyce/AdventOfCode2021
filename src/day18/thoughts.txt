@@ -1,0 +1,25 @@
+How should we store these snailfish numbers?
+- String (PROB BEST)
+- Custom class that contains a pair parameter which is of the same custom class. Could go on forever if you wanted to.
+-
+
+
+Algorithm for explosion:
+[[[[4,3],4],4],[7,[[8,4],9]]] + [1,1] =
+[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]
+
+TEMPLATE THE SNAILFISH NUMBER: IF YOU'VE GOT A 15 IN THERE OR WHATEVER, IT MESSES WITH INDEXES
+FOR EXAMPLE: [[[[[X,X],X],X],[X,[[X,X],X]]],[X,X]]
+
+
+1. find the leftmost pair of actual nums
+2. if it's nested inside 4 pairs, you can explode it
+3. if not, keep going right until you find an actual pair
+
+We've found a pair: [4, 3]
+- store those 2 values and their indexes
+- go left until you find a regular num. if you find one, add the left value to it.
+- do the same with the right number
+- replace the entired exploded pair with "0"
+
+Algorithm for splitting:
