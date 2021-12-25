@@ -1,4 +1,4 @@
-package day9;
+package day09;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,11 +6,10 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PartTwo {
     public static void main(String[] args) throws IOException {
-        File f = new File("src/day9/main_input.txt");
+        File f = new File("src/day09/main_input.txt");
         Integer[][] board = Files.readAllLines(f.toPath()).stream().map(x ->
                 Arrays.stream(x.split("")).map(Integer::parseInt).toArray(Integer[]::new)
         ).toArray(Integer[][]::new);

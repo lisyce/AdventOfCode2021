@@ -1,4 +1,4 @@
-file = open("src/day2/input.txt").readlines()
+file = open("src/day02/input.txt").readlines()
 
 horizontal = 0
 vertical = 0

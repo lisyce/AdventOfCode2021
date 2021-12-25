@@ -1,4 +1,4 @@
-package day6;
+package day06;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ public class Main {
 
     //store key/value pairs: timer/number of fish with that timer
     public static void main(String[] args) throws IOException {
-        Scanner s  = new Scanner(new File("src/day6/input.txt"));
+        Scanner s  = new Scanner(new File("src/day06/input.txt"));
         int[] initialFish = Arrays.stream(s.nextLine().split(",")).mapToInt(Integer::parseInt).toArray();
 
         //convert to a map

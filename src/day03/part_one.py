@@ -1,4 +1,4 @@
-file = open("src/day3/input.txt").readlines()
+file = open("src/day03/input.txt").readlines()
 
 #gamma
 final_gamma = ''
@@ -9,15 +9,15 @@ bits = len(file[0]) - 1
 
 for i in range(bits):
     zero = 0
-    day1 = 0
+    day01 = 0
     for line in file:
         line = line.strip()
         bit = line[i]
         if int(bit) == 0:
             zero += 1
         else:
-            day1 += 1
-    if zero > day1:
+            day01 += 1
+    if zero > day01:
         final_gamma += '0'
         final_epsilon += '1'
     else:

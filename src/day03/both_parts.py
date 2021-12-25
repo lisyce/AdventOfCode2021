@@ -1,4 +1,4 @@
-file = open("src/day3/input.txt").readlines()
+file = open("src/day03/input.txt").readlines()
 
 
 bits = len(file[0]) - 1
@@ -7,18 +7,18 @@ def most_least_common_bit(lines, double):
     most_least = ['', '']
     for i in range(bits):
         zero = 0
-        day1 = 0
+        day01 = 0
         for line in lines:
             line = line.strip()
             bit = line[i]
             if int(bit) == 0:
                 zero += 1
             else:
-                day1 += 1
-        if zero == day1 and double:
+                day01 += 1
+        if zero == day01 and double:
             most_least[0] += '1'
             most_least[1] += '0'
-        elif zero > day1:
+        elif zero > day01:
             most_least[0] += '0'
             most_least[1] += '1'
         else:
@@ -36,7 +36,7 @@ oxy_list = file.copy()
 co_list = file.copy()
 
 for i in range(bits):
-    #find most and least common bit in each day1
+    #find most and least common bit in each day01
     oxy_check = most_least_common_bit(oxy_list, True)[0]
     co_check = most_least_common_bit(co_list, True)[1]
     

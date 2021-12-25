@@ -1,4 +1,4 @@
-package day5;
+package day05;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class Main {
     }
 
     public static void partOne() throws IOException {
-        File f = new File("src/day5/input.txt");
+        File f = new File("src/day05/input.txt");
 
         List<String> lines = Files.readAllLines(f.toPath());
         for(String line : lines) {
@@ -31,7 +31,7 @@ public class Main {
     }
 
     public static void partTwo() throws IOException {
-        File f = new File("src/day5/input.txt");
+        File f = new File("src/day05/input.txt");
 
         List<String> lines = Files.readAllLines(f.toPath());
         for(String line : lines) {

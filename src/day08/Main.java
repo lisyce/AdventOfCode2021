@@ -1,4 +1,4 @@
-package day8;
+package day08;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("src/day8/main_input.txt");
+        File f = new File("src/day08/main_input.txt");
         List<String> lines = Files.readAllLines(f.toPath());
 
         //cleaner parsing with more streams (same thing as below but nicer looking)

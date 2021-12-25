@@ -1,4 +1,4 @@
-package day1;
+package day01;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner s = new Scanner(new File("src/day1/input.txt"));
+        Scanner s = new Scanner(new File("src/day01/input.txt"));
 
         //part one
 //        int total = 0;
