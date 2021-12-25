@@ -13,9 +13,18 @@ public class Main {
             finalSum = addSnailfishNumbers(finalSum, line);
         }
 
+//        String templatedSum = templateSnailfishNumber(finalSum);
+//        ArrayList<Integer> realNums = snailfishNumberToRealNums(finalSum);
+//        finalSum = explodeSnailfishNumber(realNums, templatedSum);
+//        System.out.println(finalSum);
+
+        finalSum = "[7,[6,[5,[4,[3,2]]]]]";
+
         String templatedSum = templateSnailfishNumber(finalSum);
         ArrayList<Integer> realNums = snailfishNumberToRealNums(finalSum);
-        System.out.println(explodeSnailfishNumber(realNums, templatedSum));
+        finalSum = explodeSnailfishNumber(realNums, templatedSum);
+        System.out.println(finalSum);
+
         //add, then reduce, then add, then reduce
     }
 
@@ -84,32 +93,36 @@ public class Main {
                     boolean foundRegNum = false;
                     for(int j=i-1; j>=0; j--) {
                         if(templatedNum.charAt(j) == 'x') {
-                            realNums.set(xCount, realNums.get(xCount) + leftNum);
-                            String leftChunk = buildSnailfishNumFromRealNums(realNums, templatedNum.substring(0, j));
+                            realNums.set(xCount-1, realNums.get(xCount-1) + leftNum);
+
+                            String leftChunk = buildSnailfishNumFromRealNums(realNums, templatedNum.substring(0, j+2));
                             postExplosion.append(leftChunk);
                             foundRegNum = true;
                             break;
                         }
                     }
-                    if(!foundRegNum) postExplosion.append(templatedNum, 0, i);
-
+                    if(!foundRegNum) postExplosion.append(buildSnailfishNumFromRealNums(realNums, templatedNum), 0, i);
                     //replace original pair with 0
                     postExplosion.append("0");
                     //go right until you find regular num
                     foundRegNum = false;
                     for(int j=i+5; j<templatedNum.length(); j++) {
+
                         if(templatedNum.charAt(j) == 'x') {
+
+                            realNums.set(xCount+2, realNums.get(xCount+2) + rightNum);
                             realNums.remove(xCount+1);
                             realNums.remove(xCount);
 
-                            realNums.set(xCount, realNums.get(xCount) + rightNum);
-                            String rightChunk = buildSnailfishNumFromRealNums(realNums, templatedNum.substring(j-1));
+                            for(int x=0; x<xCount; x++) realNums.remove(realNums.get(0));
+
+                            String rightChunk = buildSnailfishNumFromRealNums(realNums, templatedNum.substring(i+5));
                             postExplosion.append(rightChunk);
                             foundRegNum = true;
                             break;
                         }
                     }
-                    if(!foundRegNum) postExplosion.append(templatedNum, i, templatedNum.length());
+                    if(!foundRegNum) postExplosion.append(buildSnailfishNumFromRealNums(realNums, templatedNum.substring(i+5)));
 
                     return postExplosion.toString();
                 }
